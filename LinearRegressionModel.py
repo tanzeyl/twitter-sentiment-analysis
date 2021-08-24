@@ -1,4 +1,7 @@
 import tweepy
+import numpy as np
+from sklearn import linear_model
+import matplotlib.pyplot as plt
 
 
 def get_twitter_api():
@@ -26,6 +29,20 @@ def main():
     favorite_data, retweet_data = collect_twitter_data(api, "@cnnbrk")
     print(favorite_data)
     print(retweet_data)
+    retweet_data_col = np.array(retweet_data).reshape((-1, 1))
+    print(retweet_data_col)
+    lreg = linear_model.LinearRegression()
+    lreg.fit(retweet_data_col, favorite_data)
+    print("Coefficient: ", lreg.coef_)
+    print("Intercepts: ", lreg.intercept_)
+
+    x = np.array(range(0, max(retweet_data)))
+    y = eval("lreg.coef_*x + lreg.intercept_")
+    plt.plot(x, y)
+    plt.scatter(retweet_data, favorite_data, color="red")
+    plt.xlabel("Retweets")
+    plt.ylabel("Favorites")
+    plt.show()
 
 
 if __name__ == "__main__":
