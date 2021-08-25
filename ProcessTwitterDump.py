@@ -1,3 +1,4 @@
+import csv
 import json
 import pickle
 from nltk.tokenize import word_tokenize
@@ -92,12 +93,16 @@ def process(input_file, output_file):
                 csv_data_item["longitude"] = location.longitude
         csv_data.append(csv_data_item)
         cnt += 1
-        if cnt > 10:
-            break
-    print(csv_data)
-    # The percentage of positive mood is 0.5525186647215309. (Python)
+        if cnt % 100 == 0:
+            print("Processed {} tweets and looked up {} tweets.".format(cnt, locator.lookups))
+    keys = csv_data[0].keys()
+    with open(output_file, "w") as f:
+        dict_writer = csv.DictWriter(f, keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(csv_data)
 
 
 if __name__ == "__main__":
-    input_file = "tweets_with_java.json"
-    process(input_file, None)
+    input_file = "tweets_with_python.json"
+    output_file = "mood_data_python.csv"
+    process(input_file, output_file)
