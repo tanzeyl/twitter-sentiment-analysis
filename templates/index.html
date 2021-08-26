@@ -8,21 +8,29 @@
     <link rel = "icon" href = "../static/img/favicon.png" type="image/x-icon">
 </head>
 <body>
-<div id="cover">
-  <form method="POST" action="/search">
-    <div class="tb">
-      <div class="td"><input type="text" placeholder="Enter a topic." required name = "query"></div>
-      <div class="td" id="s-cover">
-        <button type="submit">
-          <div id="s-circle"></div>
-          <span></span>
-        </button>
-      </div>
+<h3>Along with Twitter Sentiment Analysis, I also made a little program to draw up a map that shows how people across the world feel about
+Java and Python</h3>
+<ul>
+    <li><a href={{ url_for("java") }}>Click here </a>for Java.</li>
+    <li><a href={{ url_for("python") }}>Click here </a>for Python.</li>
+</ul>
+<div class = "search-div">
+    <div id="cover">
+        <form method="POST" action="/search">
+            <div class="tb">
+            <div class="td"><input type="text" placeholder="Enter a topic." required name = "query"></div>
+            <div class="td" id="s-cover">
+                <button type="submit">
+                <div id="s-circle"></div>
+                <span></span>
+                </button>
+            </div>
+            </div>
+        </form>
     </div>
-  </form>
 </div>
 {% if your_list %}
-    <div class = "table_div">
+    <div>
     <table class="table table-dark table-striped table-hover table-bordered">
         <caption>Out of a total of {{ count }} tweets, there are {{ pos_cnt }} positive tweets and {{ neg_cnt }} negative tweets about "{{ query }}" and the rest are neutral.</caption>
       <thead>

@@ -78,7 +78,17 @@ def result():
                 pos_cnt += 1
             elif tweet["sentiment"] == "Negative":
                 neg_cnt += 1
-        return render_template('index.html', your_list=tweets, pos_cnt = pos_cnt, neg_cnt = neg_cnt, count = len(tweets), query = query)
+        return render_template('index.html', your_list=tweets, pos_cnt=pos_cnt, neg_cnt=neg_cnt, count=len(tweets),
+                               query=query)
+
+
+@app.route("/java", methods=["GET", "POST"])
+def java():
+    return render_template("mood_java.html")
+
+@app.route("/python", methods = ["GET", "POST"])
+def python():
+    return render_template("mood_python.html")
 
 
 if __name__ == "__main__":

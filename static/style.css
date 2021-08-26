@@ -37,6 +37,10 @@ input, button
     background-color: transparent;
 }
 
+.search-div {
+    padding-top: 25%;
+}
+
 #cover
 {
     position: relative;
