@@ -8,12 +8,14 @@
     <link rel = "icon" href = "../static/img/favicon.png" type="image/x-icon">
 </head>
 <body>
-<h3>Along with Twitter Sentiment Analysis, I also made a little program to draw up a map that shows how people across the world feel about
-Java and Python</h3>
-<ul>
-    <li><a href={{ url_for("java") }}>Click here </a>for Java.</li>
-    <li><a href={{ url_for("python") }}>Click here </a>for Python.</li>
-</ul>
+<div class="info-class">
+    <h3>Along with Twitter Sentiment Analysis, I also made a little program to draw up a map that shows how people across the world feel about
+        Java and Python</h3>
+    <ul>
+        <li><a href={{ url_for("java") }}>Click here </a>for Java.</li>
+        <li><a href={{ url_for("python") }}>Click here </a>for Python.</li>
+    </ul>
+</div>
 <div class = "search-div">
     <div id="cover">
         <form method="POST" action="/search">

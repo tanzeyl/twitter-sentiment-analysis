@@ -41,6 +41,11 @@ input, button
     padding-top: 25%;
 }
 
+.info-class {
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
 #cover
 {
     position: relative;
