@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="../static/style.css"
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
     <meta charset="UTF-8">
     <title>Twitter Sentiment Analysis</title>
 </head>
@@ -9,7 +10,7 @@
 <div id="cover">
   <form method="POST" action="/search">
     <div class="tb">
-      <div class="td"><input type="text" placeholder="Search" required name = "query"></div>
+      <div class="td"><input type="text" placeholder="Enter a topic." required name = "query"></div>
       <div class="td" id="s-cover">
         <button type="submit">
           <div id="s-circle"></div>
@@ -19,10 +20,28 @@
     </div>
   </form>
 </div>
-<ol>
-    {% for your_list_element in your_list %}
-      <li>{{ your_list_element }} </li>
-  {% endfor %}
-</ol>
+{% if your_list %}
+    <div class = "table_div">
+    <table class="table table-dark table-striped table-hover table-bordered">
+        <caption>Out of a total of {{ count }} tweets, there are {{ pos_cnt }} positive tweets and {{ neg_cnt }} negative tweets about "{{ query }}" and the rest are neutral.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Serial Number</th>
+          <th scope="col"><center>Tweet Text</center></th>
+          <th scope="col">Tweet Sentiment</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dict_item in your_list %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ dict_item["text"] }}</td>
+                <td>{{ dict_item["sentiment"] }}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endif %}
 </body>
 </html>

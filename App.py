@@ -20,19 +20,16 @@ class TwitterClient(object):
         except:
             print("Error: Authentication Failed")
 
-    def clean_tweet(self, tweet):
-        return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
-
     def get_tweet_sentiment(self, tweet):
-        analysis = TextBlob(self.clean_tweet(tweet))
+        analysis = TextBlob(tweet)
         if analysis.sentiment.polarity > 0:
-            return 'positive'
+            return 'Positive'
         elif analysis.sentiment.polarity == 0:
-            return 'neutral'
+            return 'Neutral'
         else:
-            return 'negative'
+            return 'Negative'
 
-    def get_tweets(self, query, count=25):
+    def get_tweets(self, query, count=200):
         tweets = []
         try:
             fetched_tweets = self.api.search(q=query, count=count)
@@ -50,13 +47,10 @@ class TwitterClient(object):
         except tweepy.TweepError as e:
             print("Error : " + str(e))
 
-# api = TwitterClient()
-# tweets = api.get_tweets(query='Donald Trump', count=200)
-# ptweets = [tweet for tweet in tweets if tweet['sentiment'] == 'positive']
-# print("Positive tweets percentage: {} %".format(100 * len(ptweets) / len(tweets)))
-# ntweets = [tweet for tweet in tweets if tweet['sentiment'] == 'negative']
-# all_tweets = [ptweets, ntweets]
-# return all_tweets
+
+def clean_data(token):
+    return [item for item in token if
+            not item.startswith('@') and not item.startswith('http') and not item.startswith("RT")]
 
 
 app = Flask(__name__)
@@ -72,14 +66,19 @@ def result():
     if request.method == "POST":
         api = TwitterClient()
         query = str(request.form.get("query"))
-        tweets = api.get_tweets(query = query, count = 25)
+        tweets = api.get_tweets(query=query, count=25)
         for tweet in tweets:
-            if "retweeted_status" in tweet:
-                tweet = tweet["retweeted_status"]
-        ptweets = [tweet for tweet in tweets if tweet['sentiment'] == 'positive']
-        ntweets = [tweet for tweet in tweets if tweet['sentiment'] == 'negative']
-        all_tweets = [ptweets, ntweets]
-        return render_template('index.html', your_list = all_tweets)
+            my_list = tweet["text"].split()
+            for item in range(len(my_list)):
+                new_list = clean_data(my_list)
+            tweet["text"] = " ".join(new_list)
+        pos_cnt, neg_cnt = 0, 0
+        for tweet in tweets:
+            if tweet["sentiment"] == "Positive":
+                pos_cnt += 1
+            elif tweet["sentiment"] == "Negative":
+                neg_cnt += 1
+        return render_template('index.html', your_list=tweets, pos_cnt = pos_cnt, neg_cnt = neg_cnt, count = len(tweets), query = query)
 
 
 if __name__ == "__main__":
