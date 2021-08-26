@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="../static/style.css"
+    <meta charset="UTF-8">
+    <title>Twitter Sentiment Analysis</title>
+</head>
+<body>
+<div id="cover">
+  <form method="POST" action="/search">
+    <div class="tb">
+      <div class="td"><input type="text" placeholder="Search" required name = "query"></div>
+      <div class="td" id="s-cover">
+        <button type="submit">
+          <div id="s-circle"></div>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<ol>
+    {% for your_list_element in your_list %}
+      <li>{{ your_list_element }} </li>
+  {% endfor %}
+</ol>
+</body>
+</html>

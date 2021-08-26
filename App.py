@@ -1,3 +1,6 @@
+import numpy as np
+import joblib
+from flask import Flask, render_template, request
 import re
 import tweepy
 from tweepy import OAuthHandler
@@ -29,7 +32,7 @@ class TwitterClient(object):
         else:
             return 'negative'
 
-    def get_tweets(self, query, count=10):
+    def get_tweets(self, query, count=25):
         tweets = []
         try:
             fetched_tweets = self.api.search(q=query, count=count)
@@ -47,26 +50,37 @@ class TwitterClient(object):
         except tweepy.TweepError as e:
             print("Error : " + str(e))
 
+# api = TwitterClient()
+# tweets = api.get_tweets(query='Donald Trump', count=200)
+# ptweets = [tweet for tweet in tweets if tweet['sentiment'] == 'positive']
+# print("Positive tweets percentage: {} %".format(100 * len(ptweets) / len(tweets)))
+# ntweets = [tweet for tweet in tweets if tweet['sentiment'] == 'negative']
+# all_tweets = [ptweets, ntweets]
+# return all_tweets
 
-def main():
-    api = TwitterClient()
-    tweets = api.get_tweets(query='Donald Trump', count=200)
-    ptweets = [tweet for tweet in tweets if tweet['sentiment'] == 'positive']
-    print("Positive tweets percentage: {} %".format(100 * len(ptweets) / len(tweets)))
-    ntweets = [tweet for tweet in tweets if tweet['sentiment'] == 'negative']
-    # print("Negative tweets percentage: {} %".format(100 * len(ntweets) / len(tweets)))
-    # print("Neutral tweets percentage: {} %.".format(100 * (len(tweets) - (len(ntweets) + len(ptweets))) / len(tweets)))
-    # print("\n\nPositive tweets:")
-    # for tweet in ptweets[:10]:
-    #     print(tweet['text'])
-    # print("\n\nNegative tweets:")
-    # for tweet in ntweets[:10]:
-    #     print(tweet['text'])
-    all_tweets = []
-    all_tweets.append(ptweets)
-    all_tweets.append(ntweets)
-    return all_tweets
+
+app = Flask(__name__)
+
+
+@app.route("/", methods=['GET', 'POST'])
+def home():
+    return render_template('index.html')
+
+
+@app.route("/search", methods=["GET", "POST"])
+def result():
+    if request.method == "POST":
+        api = TwitterClient()
+        query = str(request.form.get("query"))
+        tweets = api.get_tweets(query = query, count = 25)
+        for tweet in tweets:
+            if "retweeted_status" in tweet:
+                tweet = tweet["retweeted_status"]
+        ptweets = [tweet for tweet in tweets if tweet['sentiment'] == 'positive']
+        ntweets = [tweet for tweet in tweets if tweet['sentiment'] == 'negative']
+        all_tweets = [ptweets, ntweets]
+        return render_template('index.html', your_list = all_tweets)
 
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)
