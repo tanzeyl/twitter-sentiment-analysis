@@ -9,10 +9,10 @@ from textblob import TextBlob
 
 class TwitterClient(object):
     def __init__(self):
-        consumer_key = 'VEDzqDFM9kdNTjTfnoncOlYOx'
-        consumer_secret = 'kSGCugLi1MnF4y5nVBYfRDWEI0Gzn61czlXlNlZ26ypuJ0JrGq'
-        access_token = '1430185691506487311-T4ppr9guz9BtBsPMf4II8zRzVZAGDS'
-        access_token_secret = 'TzbCSch4nktm16yu6Wf7z5AiVwYOC5WWUiBRTg7ERyUiF'
+        consumer_key = 'XXXXXXXXXXXXXXXXXXXXXXXXXXX'
+        consumer_secret = 'XXXXXXXXXXXXXXXXXXXXXXXXXXX'
+        access_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+        access_token_secret = 'XXXXXXXXXXXXXXXXXXXXXXXXXXX'
         try:
             self.auth = OAuthHandler(consumer_key, consumer_secret)
             self.auth.set_access_token(access_token, access_token_secret)
